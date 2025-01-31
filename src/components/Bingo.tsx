@@ -7,9 +7,11 @@ const Bingo = () => {
     const [selectedTiles, setSelectedTiles] = useState<Set<string>>(new Set());
     const [shuffledTiles, setShuffledTiles] = useState<BingoTile[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [showConfirmation, setShowConfirmation] = useState(false);
 
     const shuffleTiles = () => {
         setIsLoading(true);
+        setShowConfirmation(false);
         setTimeout(() => {
             const shuffled = [...bingoTiles]
                 .sort(() => Math.random() - 0.5)
@@ -20,6 +22,10 @@ const Bingo = () => {
             localStorage.removeItem('shuffledTiles');
             setIsLoading(false);
         }, 500);
+    };
+
+    const handleNewGameClick = () => {
+        setShowConfirmation(true);
     };
 
     useEffect(() => {
@@ -108,7 +114,7 @@ const Bingo = () => {
                 {!isLoading && (
                     <div className="text-center">
                         <button
-                            onClick={shuffleTiles}
+                            onClick={handleNewGameClick}
                             className="bg-purple-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold 
                                 shadow-lg hover:bg-purple-700 transition-all duration-300 
                                 transform hover:scale-105 text-sm sm:text-base"
@@ -118,6 +124,33 @@ const Bingo = () => {
                     </div>
                 )}
             </div>
+
+            {/* Confirmation Modal */}
+            {showConfirmation && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+                    <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl transform transition-all">
+                        <h2 className="text-xl font-bold text-gray-900 mb-4">Start New Game?</h2>
+                        <p className="text-gray-600 mb-6">
+                            This will reset your current progress. Are you sure you want to start a new game?
+                        </p>
+                        <div className="flex justify-end gap-3">
+                            <button
+                                onClick={() => setShowConfirmation(false)}
+                                className="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={shuffleTiles}
+                                className="px-4 py-2 bg-purple-600 text-white rounded-lg font-medium 
+                                    hover:bg-purple-700 transition-colors"
+                            >
+                                Start New Game
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
