@@ -10,7 +10,6 @@ const Bingo = () => {
 
     const shuffleTiles = () => {
         setIsLoading(true);
-        // Simulate a small loading delay for better UX
         setTimeout(() => {
             const shuffled = [...bingoTiles]
                 .sort(() => Math.random() - 0.5)
@@ -24,7 +23,6 @@ const Bingo = () => {
     };
 
     useEffect(() => {
-        // Load state from localStorage
         const savedTiles = localStorage.getItem('selectedTiles');
         const savedBoard = localStorage.getItem('shuffledTiles');
         
@@ -38,7 +36,6 @@ const Bingo = () => {
     }, []);
 
     useEffect(() => {
-        // Only save to localStorage if we have tiles (don't save initial empty state)
         if (shuffledTiles.length > 0) {
             localStorage.setItem('selectedTiles', JSON.stringify([...selectedTiles]));
             localStorage.setItem('shuffledTiles', JSON.stringify(shuffledTiles));
@@ -56,58 +53,65 @@ const Bingo = () => {
     };
 
     const SkeletonTile = () => (
-        <div className="aspect-square p-2 rounded-lg shadow-lg bg-white/50 animate-pulse flex flex-col items-center justify-center">
-            <div className="w-12 h-12 rounded-full bg-gray-200 mb-2"></div>
-            <div className="w-3/4 h-3 bg-gray-200 rounded"></div>
-            <div className="w-1/2 h-3 bg-gray-200 rounded mt-1"></div>
+        <div className="aspect-square p-1 sm:p-2 rounded-lg shadow-lg bg-white/50 animate-pulse flex flex-col items-center justify-center">
+            <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-gray-200 mb-1 sm:mb-2"></div>
+            <div className="w-3/4 h-2 sm:h-3 bg-gray-200 rounded"></div>
+            <div className="w-1/2 h-2 sm:h-3 bg-gray-200 rounded mt-1"></div>
         </div>
     );
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-purple-100 to-pink-100 p-4 md:p-8">
-            <div className="max-w-4xl mx-auto">
-                <h1 className="text-4xl md:text-6xl font-bold text-center mb-8 text-purple-700 
+        <div className="min-h-screen bg-gradient-to-br from-purple-100 to-pink-100 p-2 sm:p-4 md:p-8 flex items-center justify-center">
+            <div className="w-full max-w-lg sm:max-w-2xl md:max-w-4xl flex flex-col items-center">
+                <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-center mb-4 sm:mb-6 text-purple-700 
                     drop-shadow-lg">
                     Party Bingo! 🎉
                 </h1>
                 
-                <div className="grid grid-cols-5 gap-2 md:gap-4 mb-8">
-                    {isLoading ? (
-                        Array(25).fill(null).map((_, index) => (
-                            <SkeletonTile key={index} />
-                        ))
-                    ) : (
-                        shuffledTiles.map((tile) => (
-                            <button
-                                key={tile.id}
-                                onClick={() => toggleTile(tile.id)}
-                                className={`aspect-square p-2 rounded-lg shadow-lg transition-all duration-300 
-                                    ${selectedTiles.has(tile.id)
-                                        ? 'bg-purple-600 text-white transform scale-95'
-                                        : 'bg-white hover:bg-purple-50 transform hover:scale-105'
-                                    } 
-                                    flex flex-col items-center justify-center text-center`}
-                            >
-                                <span className="text-2xl md:text-4xl mb-2">{tile.icon}</span>
-                                <span className={`text-xs md:text-sm font-semibold leading-tight
-                                    ${selectedTiles.has(tile.id)
-                                        ? 'text-white'
-                                        : 'text-gray-700'
-                                    }`}>
-                                    {tile.text}
-                                </span>
-                            </button>
-                        ))
-                    )}
+                <div className="w-full">
+                    <div className="grid grid-cols-5 gap-1 sm:gap-2 md:gap-4 mb-4 sm:mb-8">
+                        {isLoading ? (
+                            Array(25).fill(null).map((_, index) => (
+                                <SkeletonTile key={index} />
+                            ))
+                        ) : (
+                            shuffledTiles.map((tile) => (
+                                <button
+                                    key={tile.id}
+                                    onClick={() => toggleTile(tile.id)}
+                                    className={`aspect-square p-1 sm:p-2 rounded-lg shadow-lg transition-all duration-300 
+                                        ${selectedTiles.has(tile.id)
+                                            ? 'bg-purple-600 text-white transform scale-95'
+                                            : 'bg-white hover:bg-purple-50 transform hover:scale-105'
+                                        } 
+                                        flex flex-col items-center justify-center text-center`}
+                                >
+                                    <div className="flex flex-col items-center justify-center h-full w-full">
+                                        <span className="text-[min(4vw,2rem)] sm:text-[min(3vw,2rem)] md:text-[min(2vw,2rem)] mb-1 flex-none">
+                                            {tile.icon}
+                                        </span>
+                                        <span className={`text-[min(1.8vw,0.7rem)] sm:text-[min(1.4vw,0.8rem)] md:text-[min(1vw,0.875rem)] 
+                                            font-semibold leading-tight px-0.5 line-clamp-3
+                                            ${selectedTiles.has(tile.id)
+                                                ? 'text-white'
+                                                : 'text-gray-700'
+                                            } flex-1 flex items-center`}>
+                                            {tile.text}
+                                        </span>
+                                    </div>
+                                </button>
+                            ))
+                        )}
+                    </div>
                 </div>
 
                 {!isLoading && (
                     <div className="text-center">
                         <button
                             onClick={shuffleTiles}
-                            className="bg-purple-600 text-white px-8 py-4 rounded-full font-bold 
+                            className="bg-purple-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold 
                                 shadow-lg hover:bg-purple-700 transition-all duration-300 
-                                transform hover:scale-105"
+                                transform hover:scale-105 text-sm sm:text-base"
                         >
                             New Game 🎲
                         </button>
