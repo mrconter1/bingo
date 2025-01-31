@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎉 Party Bingo
 
-## Getting Started
+A fun and interactive party game that generates random challenges for social gatherings. Perfect for breaking the ice, getting people to interact, and creating memorable moments at any party.
 
-First, run the development server:
+## ✨ Features
 
+- 🎲 Random 5x5 bingo board with party challenges
+- 💾 Progress automatically saved in browser
+- 📱 Fully responsive design (mobile-friendly)
+- 🎯 50 unique party challenges
+- 🔄 New game confirmation to prevent accidental resets
+- 🎨 Beautiful UI with smooth animations
+
+## 🚀 Getting Started
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/yourusername/bingo.git
+cd bingo
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Run the development server:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Open [http://localhost:3001](http://localhost:3001) in your browser
 
-## Learn More
+## 🎮 How to Play
 
-To learn more about Next.js, take a look at the following resources:
+1. Each tile contains a fun party challenge
+2. Click a tile to mark it as completed
+3. Try to complete challenges in a row (horizontal, vertical, or diagonal)
+4. Click "New Game" to shuffle challenges and start over
+5. Your progress is automatically saved even if you close the browser
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🛠️ Built With
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Next.js 14
+- TypeScript
+- Tailwind CSS
+- Local Storage for persistence
 
-## Deploy on Vercel
+## 📱 Mobile Support
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The game is optimized for all screen sizes:
+- Responsive grid layout
+- Touch-friendly buttons
+- Adaptive text sizing
+- Smooth animations
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🔒 Privacy
+
+- All data is stored locally in your browser
+- No personal information is collected
+- No external APIs are used
+
+## 🎯 Hidden Features
+
+- Visit `/list` to see all possible challenges
+- Challenges are randomly selected from a pool of 50 options
+
+## 📝 License
+
+MIT License - feel free to use and modify for your own parties!
