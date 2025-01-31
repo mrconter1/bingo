@@ -47,8 +47,8 @@ const Bingo = () => {
     return (
         <div className="min-h-screen bg-gradient-to-br from-purple-100 to-pink-100 p-4 md:p-8">
             <div className="max-w-4xl mx-auto">
-                <h1 className="text-4xl md:text-6xl font-bold text-center mb-8 text-purple-600 
-                    animate-bounce">
+                <h1 className="text-4xl md:text-6xl font-bold text-center mb-8 text-purple-700 
+                    drop-shadow-lg">
                     Party Bingo! 🎉
                 </h1>
                 
@@ -59,13 +59,17 @@ const Bingo = () => {
                             onClick={() => toggleTile(tile.id)}
                             className={`aspect-square p-2 rounded-lg shadow-lg transition-all duration-300 
                                 ${selectedTiles.has(tile.id)
-                                    ? 'bg-purple-500 text-white transform scale-95'
-                                    : 'bg-white hover:bg-purple-100 transform hover:scale-105'
+                                    ? 'bg-purple-600 text-white transform scale-95'
+                                    : 'bg-white hover:bg-purple-50 transform hover:scale-105'
                                 } 
                                 flex flex-col items-center justify-center text-center`}
                         >
                             <span className="text-2xl md:text-4xl mb-2">{tile.icon}</span>
-                            <span className="text-xs md:text-sm font-medium leading-tight">
+                            <span className={`text-xs md:text-sm font-semibold leading-tight
+                                ${selectedTiles.has(tile.id)
+                                    ? 'text-white'
+                                    : 'text-gray-700'
+                                }`}>
                                 {tile.text}
                             </span>
                         </button>
@@ -75,8 +79,8 @@ const Bingo = () => {
                 <div className="text-center">
                     <button
                         onClick={shuffleTiles}
-                        className="bg-purple-500 text-white px-6 py-3 rounded-full font-bold 
-                            shadow-lg hover:bg-purple-600 transition-all duration-300 
+                        className="bg-purple-600 text-white px-8 py-4 rounded-full font-bold 
+                            shadow-lg hover:bg-purple-700 transition-all duration-300 
                             transform hover:scale-105"
                     >
                         New Game 🎲
