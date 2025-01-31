@@ -2,12 +2,69 @@
 
 import { useState, useEffect } from 'react';
 import { BingoTile, bingoTiles } from '../types/bingo';
+import confetti from 'canvas-confetti';
 
 const Bingo = () => {
     const [selectedTiles, setSelectedTiles] = useState<Set<string>>(new Set());
     const [shuffledTiles, setShuffledTiles] = useState<BingoTile[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [showConfirmation, setShowConfirmation] = useState(false);
+    const [showBingoModal, setShowBingoModal] = useState(false);
+
+    const checkBingo = (selected: Set<string>) => {
+        const matrix = Array(5).fill(null).map(() => Array(5).fill(false));
+        shuffledTiles.forEach((tile, index) => {
+            if (selected.has(tile.id)) {
+                matrix[Math.floor(index / 5)][index % 5] = true;
+            }
+        });
+
+        // Check rows
+        for (let i = 0; i < 5; i++) {
+            if (matrix[i].every(cell => cell)) return true;
+        }
+
+        // Check columns
+        for (let j = 0; j < 5; j++) {
+            if (matrix.every(row => row[j])) return true;
+        }
+
+        // Check diagonals
+        if (matrix.every((row, i) => row[i])) return true;
+        if (matrix.every((row, i) => row[4 - i])) return true;
+
+        return false;
+    };
+
+    const triggerBingoCelebration = () => {
+        setShowBingoModal(true);
+        
+        // Trigger confetti
+        const duration = 3000;
+        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+        
+        const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
+        
+        const interval = setInterval(() => {
+            const particleCount = 50;
+            
+            confetti({
+                ...defaults,
+                particleCount,
+                origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+            });
+            confetti({
+                ...defaults,
+                particleCount,
+                origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+            });
+        }, 250);
+        
+        setTimeout(() => {
+            clearInterval(interval);
+            setTimeout(() => setShowBingoModal(false), 1000);
+        }, duration);
+    };
 
     const shuffleTiles = () => {
         setIsLoading(true);
@@ -54,6 +111,9 @@ const Bingo = () => {
             newSelected.delete(id);
         } else {
             newSelected.add(id);
+            if (checkBingo(newSelected)) {
+                triggerBingoCelebration();
+            }
         }
         setSelectedTiles(newSelected);
     };
@@ -121,6 +181,20 @@ const Bingo = () => {
                         >
                             New Game 🎲
                         </button>
+                    </div>
+                )}
+
+                {/* Bingo Celebration Modal */}
+                {showBingoModal && (
+                    <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-50">
+                        <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-2xl transform animate-bounce">
+                            <h2 className="text-4xl md:text-6xl font-bold text-purple-600 text-center mb-4">
+                                🎉 BINGO! 🎉
+                            </h2>
+                            <p className="text-xl text-purple-500 text-center">
+                                Congratulations! You got five in a row!
+                            </p>
+                        </div>
                     </div>
                 )}
             </div>
