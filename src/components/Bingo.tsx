@@ -13,12 +13,15 @@ const Bingo = () => {
             .slice(0, 25);
         setShuffledTiles(shuffled);
         setSelectedTiles(new Set());
+        // Clear localStorage when starting a new game
+        localStorage.removeItem('selectedTiles');
+        localStorage.removeItem('shuffledTiles');
     };
 
     useEffect(() => {
-        // Load state from sessionStorage
-        const savedTiles = sessionStorage.getItem('selectedTiles');
-        const savedBoard = sessionStorage.getItem('shuffledTiles');
+        // Load state from localStorage
+        const savedTiles = localStorage.getItem('selectedTiles');
+        const savedBoard = localStorage.getItem('shuffledTiles');
         
         if (savedTiles && savedBoard) {
             setSelectedTiles(new Set(JSON.parse(savedTiles)));
@@ -29,9 +32,11 @@ const Bingo = () => {
     }, []);
 
     useEffect(() => {
-        // Save state to sessionStorage
-        sessionStorage.setItem('selectedTiles', JSON.stringify([...selectedTiles]));
-        sessionStorage.setItem('shuffledTiles', JSON.stringify(shuffledTiles));
+        // Only save to localStorage if we have tiles (don't save initial empty state)
+        if (shuffledTiles.length > 0) {
+            localStorage.setItem('selectedTiles', JSON.stringify([...selectedTiles]));
+            localStorage.setItem('shuffledTiles', JSON.stringify(shuffledTiles));
+        }
     }, [selectedTiles, shuffledTiles]);
 
     const toggleTile = (id: string) => {
